@@ -1,0 +1,120 @@
+doctype html
+html
+	head
+		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		title Pet Feeder - Dashboard
+		// Foundation framework
+		link(rel='stylesheet', href='/stylesheets/foundation/stylesheets/foundation.css')
+		link(rel='stylesheet', href='/stylesheets/css/style.css')
+
+		// Favicons and the like (avoid using transparent .png)
+		link(rel='shortcut icon', href='favicon.ico')
+		link(rel='apple-touch-icon-precomposed', href='icon.png')
+		link(rel ='stylesheet' href='/stylesheets/foundation/stylesheets/ie.css')
+		link(href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet')
+		link(href='http://fonts.googleapis.com/css?family=Terminal+Dosis' rel='stylesheet')
+
+		block extraHeader
+
+	body.ptrn_b.grdnt_a.mhover_a.fullW
+	header
+		.container.head_s_a
+			.row.sepH_b
+				.six.columns
+					.row
+						.five.phone-two.columns
+							#logo
+								img(src="/img/logo1.png",alt="Pet Feeder")
+				.six.columns
+					.user_box.cf
+						.user_avatar
+							img(src="/img/cat3.jpg" alt="avatar usuario")
+						.user_info.user_sep
+							p.sepH_a
+								strong #{session.username}
+							span
+								a(href="logout.html") Sair
+			.row
+				.twelve.columns
+					nav#smoothmenu_h.ddsmoothmenu
+						ul.cf
+							li(style="padding-left:30%")
+								a.mb_parent.first_el(href="/index") Dashboard
+							li
+								a.mb_parent(href="javascript:void(0)") Cadastro
+								ul(style="display:none")
+									li
+										a(href="/cadastro") Cartão de Vacina
+							li
+								a(href="javascript:void(0)").mb_parent Configuração de dispositivos
+								ul(style="display:none")
+									li
+										a(href="/modulo-artefato") Módulo Lançador de Artefatos
+									li
+										a(href="/modulo-laser") Módulo de Laser
+									li
+										a(href="/modulo-som") Módulo de Som
+							li
+								a(href="javascript:void(0)").mb_parent Configuração de horários
+								ul(style="display:none")
+									li
+										a(href="/dispenser/agua") Dispenser de comida
+									li
+										a(href="/dispenser/comida") Dispenser de água			
+									
+	block content
+	block foot
+		footer.container#footer
+			.row
+				.twelve.columns Todos os direitos reservados. &copy; 2015 Pet Feeder
+		#overlay
+			#overlay-container
+				#overlay-big-gear.rotating
+				#overlay-small-gear.rotating
+				#modal_confirm 
+					p Configurações Salvas!
+					button.button.medium.radius#modal_close Sair
+	block scripts
+		script(src="/javascripts/js/jquery.min.js")
+		script(src="/javascripts/lib/jQueryUI/jquery-ui-1.8.18.custom.min.js")
+		script(src="/javascripts/js/s_scripts.js")
+		script(src="/javascripts/js/jquery.ui.extend.js")
+		script(src="/javascripts/lib/qtip2/jquery.qtip.min.js")
+		script(src="/javascripts/lib/fullcalendar/fullcalendar.min.js")
+		script(src="/javascripts/js/jquery.list.min.js")
+		script(src="/javascripts/js/pertho.js")
+
+	script.
+		$(document).ready(function(){
+			prth_common.init();			
+		});
+
+		$(document).ajaxSend(function(){
+
+			$("#overlay").fadeIn(150);
+			$("#overlay-big-gear").fadeIn(150);
+			$("#overlay-small-gear").fadeIn(150);
+
+		}).ajaxSuccess(function(){
+
+			$("#overlay-big-gear,#overlay-small-gear").delay(3000).fadeOut(100,function(){
+			  $("#modal_confirm").fadeIn(50);
+			});                              
+
+			$("#modal_close").click(function(){
+			  $("#overlay").fadeOut(100);
+			  $("#modal_confirm").fadeOut(100);
+			});
+		}).ajaxStop(function(data){
+			if(data.status == 0){
+				$("#overlay-big-gear,#overlay-small-gear").delay(3000).fadeOut(100,function(){
+					$("#modal_confirm").fadeIn(50);
+				});                              
+
+				$("#modal_close").click(function(){
+				  $("#overlay").fadeOut(100);
+				  $("#modal_confirm").fadeOut(100);
+				});
+			}
+		});

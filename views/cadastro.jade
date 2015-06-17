@@ -1,0 +1,53 @@
+extends layout
+title Cadastro de Animal
+block content
+  .container
+    .row
+      .box_c
+        .box_c_heading.cf
+          .box_c_ico
+            img(src='/img/ico/icSw2/16-List.png', alt='')
+          p Cadastro de Cartão de Vacina
+        .box_c_content.form_a
+          .tab_pane
+            form#form_salvar.nice.custom(action='/cadastro/salvar',method='post')
+              .form_content
+                .formRow
+                  label(for='nice_text') Nome do animal
+                  input#nice_text.input-text.large(type='text', name='nome_animal')
+                .formRow
+                  label(for='nice_text') Raça
+                  input#nice_text.input-text.large(type='text', name='raca_animal')
+                .formRow
+                  label(for='nice_text') Sexo
+                  select#nice_select(name='sexo_animal')
+                    option(value='') -- Selecione uma opção --
+                    option(value='M') Macho
+                    option(value='F') Femea
+                .formRow
+                  label(for='nice_text') Espécie
+                  input#nice_text.input-text.large(type='text', name='especie_animal')
+                .formRow
+                  label(for='nice_text') Pelagem
+                  input#nice_text.input-text.large(type='text', name='pelagem_animal')
+                .formRow
+                  p Foto
+                  .row
+                    input#file_in(type='file', name='foto_animal')
+                .formRow(style='text-align:center')
+                  .row
+                    button#submit_form.button.small.nice.blue.radius(type='button') Enviar
+block append scripts                    
+  script.
+      function sendForm(){
+        $.ajax({
+            url:'/cadastro/salvar',
+            data:$("#form_salvar").serialize(),
+            type:'POST',
+            dataType:'HTML'            
+          });
+      }
+
+      $("#submit_form").click(function(){
+        sendForm();
+      });

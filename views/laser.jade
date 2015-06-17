@@ -1,0 +1,54 @@
+extends layout
+title Módulo de laser
+block extraHeader
+	link(rel='stylesheet',href="/stylesheets/lib/tagHandler/css/jquery.taghandler.css")
+	link(rel ='stylesheet' href='/stylesheets/lib/jQueryUI/css/Aristo/Aristo.css')
+block content
+		.container
+			.row
+				.twelve-columns
+					.box_c
+						.box_c_heading.cf
+							.box_c_ico
+								img(src='img/ico/icSw2/16-List.png', alt='')
+							p Módulo Configurador de laser
+						.box_c_content.form_a
+							.tab_pane
+								form.nice.custom#form_salvar
+									.row.sepH_b
+										.two.columns
+											.form_legend
+												h5 O que é
+												p
+													| O módulo de laser permite que você configure a ativação de lasers em horários pré-determinados para entreter o seu bichinho.
+										.ten.columns
+											.form_content
+												.formRow
+													label(for='ativar_modulo')
+														input#ativar_modulo(type='checkbox', name='ativar_modulo')
+														|	Ativar o módulo de lasers
+												.formRow
+													.row
+														.six.columns
+															label(for='horario_laser') Horários
+															ul#horario_laser
+									.formRow(style='text-align:center')
+										.row
+											button.button.small.nice.blue.radius#submit_form(type='button') Enviar
+block append scripts
+	script(src="/javascripts/js/jquery.customforms.js")
+	script(src="/javascripts/lib/tagHandler/js/jquery.taghandler.min.js")
+	script.        
+		function sendForm(){
+		$.ajax({
+			url:'/modulo-laser/salvar',
+			data:$("#form_salvar").serialize()+"&horario="+$("#horario_laser").tagHandler('getTags').join("&horario="),
+			type:'POST',
+			dataType:'HTML'
+		  });
+		}
+
+		$("#submit_form").click(function(){
+			sendForm();
+		});
+		pet_horario.init()

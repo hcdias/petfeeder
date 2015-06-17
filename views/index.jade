@@ -1,0 +1,44 @@
+extends layout
+title Pet Feeder - Dashboard
+block content
+	.container
+		.row
+			.four.columns
+				.box_c
+					.box_c_heading.cf.box_actions
+						.box_c_ico
+							img(src="img/ico/icSw2/16-Abacus.png",alt="")
+						p Estatisticas
+					.box_c_content
+						p.inner_heading.sepH_c Últimas informações
+						ul.overview_list
+							li
+								a(href="#")
+									img(src="img/blank.gif",style="background-image:url(img/ico/open/dollar.png)",alt="gastos")
+									span.ov_nb R$2,31
+									span.ov_text Gasto médio de ração
+							li
+								a(href="")
+									img(src="img/blank.gif",style="background-image:url(img/ico/open/calculator.png)",alt="media de gastos")
+									span.ov_nb 1000g
+									span.ov_text Consumo médio de ração
+			.eight.columns
+				.box_c
+					.box_c_heading.cf
+						.box_c_ico
+							img(src="img/ico/icSw2/16-Graph.png")
+						p Gráfico
+					.box_c_content
+						.inner_block
+							.h_scrollable.sepH_a.sw_resizedEL(style="height:280px")
+								.items(style="left:0px")
+									.left
+										#ds_plot1.chart_flw.jqplot-target(style="height: 280px; margin: 0px auto; width: 595px; position: relative")
+block append scripts
+	script(src="javascripts/lib/jQplot/jquery.jqplot.min.js")
+	script(src="javascripts/lib/jQplot/jqplot.plugins.js")
+	script.
+		prth_charts.ds_plot1();
+		if(!jQuery.browser.mobile) {
+			prth_charts.makeImage();
+		}

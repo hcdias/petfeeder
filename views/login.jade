@@ -1,0 +1,90 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Pet Feeder - Login
+    // Foundation framework
+    link(rel='stylesheet', href='/stylesheets/foundation/stylesheets/foundation.css')
+    link(rel='stylesheet', href='/stylesheets/css/style.css')
+    // Favicons and the like (avoid using transparent .png)
+    link(rel='shortcut icon', href='favicon.ico')
+    link(rel='apple-touch-icon-precomposed', href='icon.png')
+  body.ptrn_a.grdnt_a
+    .container
+      .row
+        .eight.columns.centered
+      .row
+        .eight.columns.centered
+          .login_box
+            .lb_content(style='padding-top:60px;padding-left:30px')
+              .login_logo(style='top:80px;padding-right:5px')
+                img(src='/img/logo1.png', alt='')
+
+              .row.m_cont
+                .eight.columns.centered
+                  .l_pane
+                    form#l_form.nice(action='/login', method='post')
+                      .sepH_c
+                        .elVal
+                          label(for='username') Usuário
+                          input#username.oversize.expand.input-text(type='text', name='username')
+                        .elVal
+                          label(for='password') Senha
+                          input#password.oversize.expand.input-text(type='password', name='password')
+                      .cf
+                        label.left(for='remember')
+                          input#remember(type='checkbox')
+                          |  Remember me
+                        input.button.small.radius.right.black(type='submit', value='Login')
+    block scripts                    
+      script(src='/javascripts/js/jquery.min.js')
+      script(src='/javascripts/js/s_scripts.js')
+      script(src='/javascripts/lib/validate/jquery.validate.min.js')
+    script.
+      $(document).ready(function() {
+        $(".sl_link").click(function(event){
+        $('.l_pane').slideToggle('normal').toggleClass('dn');
+        $('.sl_link,.lb_ribbon').children('span').toggle();
+        event.preventDefault();
+        });
+        $("#l_form").validate({
+          highlight: function(element) {
+          $(element).closest('.elVal').addClass("form-field error");
+        },
+        unhighlight: function(element) {
+          $(element).closest('.elVal').removeClass("form-field error");
+        },
+        rules: {
+          username: "required",
+          password: "required"
+        },
+        messages: {
+          username: "Digite seu usuário",
+          password: "Digite sua senha"
+        },
+          errorPlacement: function(error, element) {
+          error.appendTo( element.closest(".elVal") );
+        }
+        });
+        $("#rp_form").validate({
+          highlight: function(element) {
+        $(element).closest('.elVal').addClass("form-field error");
+        },
+          unhighlight: function(element) {
+        $(element).closest('.elVal').removeClass("form-field error");
+        },
+        rules: {
+          upname: {
+            required: true,
+            email: true
+          }
+        },
+        messages: {
+          upname: "Please enter a valid email address"
+        },
+        errorPlacement: function(error, element) {
+          error.appendTo( element.closest(".elVal") );
+        }
+        });
+      });
