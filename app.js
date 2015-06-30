@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var redis = require('redis');
 var session = require('express-session');
 var redisStore = require('connect-redis')(session);
+var io = require('socket.io')();
+
 
 //rotas
 var index = require('./routes/index');
@@ -16,6 +18,7 @@ var artefato = require('./routes/modulos/artefato');
 var laser = require('./routes/modulos/laser');
 var som = require('./routes/modulos/som');
 var dispenser = require('./routes/modulos/dispenser');
+var socket = require('./routes/socket');
 
 var app = express();
 var client = redis.createClient();
@@ -42,18 +45,23 @@ app.use(function(req,res,next){
 
 //rotas
 app.use('/',login);
-
 app.use('/index', index);
-
 app.use('/cadastro',cadastro);
-
 app.use('/modulo-artefato',artefato);
-
 app.use('/modulo-laser',laser);
-
 app.use('/modulo-som',som);
-
 app.use('/dispenser',dispenser);
+app.use('/socket',socket);
+
+
+//socket
+io.on("connection",function(socket){
+  socket.on('teste',function(msg){
+    ('message:'+ msg.shit);
+  });
+});
+io.listen(3100);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -85,6 +93,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 
 module.exports = app;

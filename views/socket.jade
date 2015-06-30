@@ -1,5 +1,5 @@
 extends layout
-title Dispenser de água
+title Socket Teste
 block extraHeader
     link(rel='stylesheet',href="/stylesheets/lib/tagHandler/css/jquery.taghandler.css")
     link(rel ='stylesheet' href='/stylesheets/lib/jQueryUI/css/Aristo/Aristo.css')
@@ -36,19 +36,9 @@ block content
                     .row
                       button.button.small.nice.blue.radius#submit_form(type='button') Enviar
 block append scripts
-    script(src="/javascripts/js/jquery.customforms.js")
-    script(src="/javascripts/lib/tagHandler/js/jquery.taghandler.min.js")
-    script.        
-        function sendForm(){
-        $.ajax({
-            url:'/dispenser/agua-salvar',
-            data:$("#form_salvar").serialize()+"&horario="+$("#horario_dispenser_a").tagHandler('getTags').join("&horario="),
-            type:'POST',
-            dataType:'HTML'
-          });
-        }
-
-        $("#submit_form").click(function(){
-            sendForm();
-        });
-        pet_horario.init() 
+    script(src="https://cdn.socket.io/socket.io-1.2.0.js")
+    script.
+      var socket = io("http://localhost:3100");
+      $("#submit_form").click(function(){
+        socket.emit('teste',{shit:'shit'});
+      });

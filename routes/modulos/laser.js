@@ -8,66 +8,80 @@ router.get('/',function(req,res,next){
 });
 
 router.post('/salvar',function(req,res,next){
+	var statusRes = null;
 
-	if(!req.body || req.body.ativar_modulo == undefined){
-		
-	}	
-		
-	var ativar_modulo = req.body.ativar_modulo;
-	var horarios = req.body.horario;
-	var bulkSql = [];
+	if(req.body.ativar_modulo == undefined){		
+		statusRes = removeData();
+	}else{
 
-	if(typeof horarios === 'string'){
-		horarios = [horarios];
+		console.log(req.body);		
+		var ativar_modulo = req.body.ativar_modulo;
+		var horarios = req.body.horario;
+		var bulkSql = [];
+
+		if(typeof horarios === 'string'){
+			horarios = [horarios];
+		}
+
+		for(horario in horarios){
+			bulkSql.push([horarios[horario],1]);
+		}
+
+		statusRes = saveData(bulkSql,horarios);
 	}
 
-	for(horario in horarios){
-		bulkSql.push([horarios[horario],1]);
-	}
-
-	var statusRes = saveData(bulkSql);
+	
 
 	res.send({status:statusRes});
 
 });
 
-function saveData(bulkSql){
-	var result = null;
+function saveData(bulkSql,horarios){
 	db.query("INSERT INTO modulo_ativo (horario,modulo_id) VALUES ?",[bulkSql],function(err,rows,field){
-			if(err){
-				result = 0;
-				console.log(err);
+				if(err){
+					console.log(err);
+				}else{
+					
+					var stringSplit = [];
+					for(horario in horarios){
+						stringSplit.push(horarios[horario].split(":"));
+					}
 
-			}else{
+					cron.load(function(err,crontab){
+						
+						for(string in stringSplit){
+							crontab.create("/home/root/petfeeder/scripts/bash/laser.sh",stringSplit[string][1]+" "+stringSplit[string][0]+" * * *","laser");
+						}
 
-				cron.load(function(err,crontab){
-					var job = crontab.create("node /home/root/petfeeder/scripts/bash/laser.sh","50 2 * * *","laser");
-					//crontab.remove({command:'ls -l',comment:/teste/});
-					crontab.save(function(err,crontab){
-						console.log(err+" save");
-					});
-
-				});
+						crontab.save(function(err,crontab){
+							console.log(err+" save");
+						});
+					}.bind(this));
+				}
 			}
-		}.bind(this)
-	);
-
-	db.end();
-	return result;
+		);
+	//db.end();
+	return 'save';
 }
 
 function removeData(){
-	db.query("DELETE FROM modulo_ativo WHERE id_modulo = 1",function(err,rows,field){
+	db.query("DELETE FROM modulo_ativo WHERE modulo_id = 1",function(err,rows,field){
 		if(err){
 			console.log(err);
+			return false;
 		}else{
 			cron.load(function(err,crontab){
+				
 				crontab.remove({command:'node /home/root/petfeeder/scripts/bash/laser.sh',comment:/laser/});
-			});	
+				crontab.save(function(err,crontab){
+					console.log(err+" save");
+				});
+			});
 		}		
 	});
 
-	db.end();	
+	return 'remove';
+	//db.end();	
 }
 
 module.exports = router;

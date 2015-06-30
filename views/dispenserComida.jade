@@ -42,7 +42,7 @@ block append scripts
         function sendForm(){
         $.ajax({
             url:'/dispenser/comida-salvar',
-            data:$("#form_salvar").serialize()+"&"+$.param({'horario':$("#horario_dispenser_c").tagHandler('getTags')}),
+            data:$("#form_salvar").serialize()+"&horario="+$("#horario_dispenser_c").tagHandler('getTags').join("&horario="),
             type:'POST',
             dataType:'HTML'
           });
