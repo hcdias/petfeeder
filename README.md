@@ -1,7 +1,6 @@
-# README #
-PetFeeder: Um alimentador automático e central multimídia para animais baseado em NodeJS e Microcontroladores.
+# PetFeeder: Um alimentador para animais automático baseado em NodeJS e Microcontroladores.
 
-Para instalar as dependencias(middlewares),dentro da raiz do projeto execute 
+Para instalar as dependencias(middlewares),dentro da raiz do projeto execute
 
 npm install
 
