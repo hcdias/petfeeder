@@ -1,4 +1,6 @@
-# PetFeeder: Um alimentador para animais automático baseado em NodeJS e Microcontroladores.
+# PetFeeder: Um alimentador para animais automático baseado em NodeJS e SBC.
+
+Um protótipo multifuncional de um alimentador automático de animais com a beaglebone black.
 
 Para instalar as dependencias(middlewares),dentro da raiz do projeto execute
 
